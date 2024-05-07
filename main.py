@@ -1,36 +1,42 @@
 from datetime import datetime
 
 import strings as s
+from file_utils import Transaction
 import validators as valid
 
 summa = 0
 
 
-def get_category() -> int:
+def get_category() -> str:
     """
     Обработка ввода категории.
     """
+    CAT = {
+        1: 'Доход',
+        2: 'Расход'
+    }
+
     while True:
         try:
             category = int(input(s.SELECT_CATEGORY))
             if category in (1, 2):
-                return category
+                return CAT[category]
             else:
                 print(s.BAD_CATEGORY)
         except ValueError:
             print(s.BAD_CATEGORY)
 
 
-def get_money(category: int) -> int:
+def get_money(category: str) -> int:
     """
     Обработка ввода суммы.
     """
     # добавить обработчик исключений
     money: int
-    if category == 1:
+    if category == 'Доход':
         money = input(s.DEPOSIT_MONEY)
     else:
-        money = -input(s.SPEND_MONY)
+        money = -int(input(s.SPEND_MONY))
     return money
 
 
@@ -47,16 +53,14 @@ def main():
         print(s.WELCOME_MESSAGE)
         current_category = get_category()
         current_money = get_money(current_category)
-        current_date: datetime = datetime.now().strftime("%Y-%m-%d %A")
         current_description = get_description()
+        Transaction.set_transaction(
+            current_category,
+            current_money,
+            current_description
+        )
         restart: int = input(s.RESTART)
-        flag = restart == 1
-
-        # print(current_category,
-        #       current_money,
-        #       current_date,
-        #       current_description,
-        #       sep='\n')
+        flag = restart != 1
 
 
 if __name__ == "__main__":
