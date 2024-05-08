@@ -86,6 +86,5 @@ class ReportService:
 
     @classmethod
     def get_report(cls):
-        print(cls.transaction.get_all_transaction())
-
-
+        all_resolt = []
+        for trans in cls.transaction.get_all_transaction():
