@@ -1,10 +1,5 @@
-from datetime import datetime
-
 import strings as s
-from file_utils import Transaction
-import validators as valid
-
-summa = 0
+from file_utils import Transaction, ReportService
 
 
 def get_category() -> str:
@@ -31,13 +26,34 @@ def get_money(category: str) -> int:
     """
     Обработка ввода суммы.
     """
-    # добавить обработчик исключений
-    money: int
-    if category == 'Доход':
-        money = input(s.DEPOSIT_MONEY)
-    else:
-        money = -int(input(s.SPEND_MONY))
-    return money
+    deposit_amount: int
+
+    while True:
+        if category == 'Доход':
+            try:
+                deposit_amount = int(input(s.DEPOSIT_MONEY))
+                if deposit_amount < 0:
+                    print(s.INVALID_DEPOSIT_AMOUNT)
+                    continue
+                return deposit_amount
+            except ValueError:
+                print(s.INVALID_DEPOSIT_FORMAT)
+                continue
+
+        else:
+            try:
+                deposit_amount = int(input(s.SPEND_MONY))
+                balance = Transaction.get_balance()
+                if deposit_amount < 0:
+                    print(s.INVALID_DEPOSIT_AMOUNT)
+                    continue
+                if balance - deposit_amount < 0:
+                    print(s.INSUFFICIENT_FUNDS)
+                    continue
+                return deposit_amount
+            except ValueError:
+                print(s.INVALID_DEPOSIT_FORMAT)
+                continue
 
 
 def get_description() -> str:
@@ -45,6 +61,18 @@ def get_description() -> str:
     Обработка ввода описания.
     """
     return input(s.DESCRIPTION)
+
+
+def restart_report() -> str:
+    """
+    Формирование отчетности.
+    """
+    massage = input(s.SELECT_REPORT)
+    report = ReportService()
+    if massage == "2":
+        report.get_report()
+        print(s.RETURN_REPORT)
+    return massage
 
 
 def main():
@@ -59,8 +87,8 @@ def main():
             current_money,
             current_description
         )
-        restart: int = input(s.RESTART)
-        flag = restart != 1
+        restart: str = restart_report()
+        flag = restart == "1"
 
 
 if __name__ == "__main__":

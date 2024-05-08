@@ -1,0 +1,93 @@
+[
+    {
+        "date": "2024-05-08 09:26:08",
+        "category": "Доход",
+        "amount": 20000,
+        "description": "зп",
+        "balance": 20000
+    },
+    {
+        "date": "2024-05-08 09:26:29",
+        "category": "Расход",
+        "amount": -3000,
+        "description": "маг",
+        "balance": 23000
+    },
+    {
+        "date": "2024-05-08 09:50:29",
+        "category": "Доход",
+        "amount": 200,
+        "description": "ап",
+        "balance": 23200
+    },
+    {
+        "date": "2024-05-08 09:53:17",
+        "category": "Доход",
+        "amount": 200,
+        "description": "просто",
+        "balance": 23400
+    },
+    {
+        "date": "2024-05-08 10:06:43",
+        "category": "Доход",
+        "amount": 5000,
+        "description": "за",
+        "balance": 28400
+    },
+    {
+        "date": "2024-05-08 10:13:38",
+        "category": "Доход",
+        "amount": -5,
+        "description": "fdgxhz",
+        "balance": 28395
+    },
+    {
+        "date": "2024-05-08 10:19:38",
+        "category": "Доход",
+        "amount": 6,
+        "description": "pt",
+        "balance": 28401
+    },
+    {
+        "date": "2024-05-08 10:20:52",
+        "category": "Расход",
+        "amount": 6,
+        "description": "xdg",
+        "balance": 28395
+    },
+    {
+        "date": "2024-05-08 11:02:17",
+        "category": "Доход",
+        "amount": 5,
+        "description": "xdfg",
+        "balance": 28400
+    },
+    {
+        "date": "2024-05-08 11:05:27",
+        "category": "Расход",
+        "amount": 4,
+        "description": "sgdf",
+        "balance": 28396
+    },
+    {
+        "date": "2024-05-08 11:08:39",
+        "category": "Расход",
+        "amount": 6,
+        "description": "чап",
+        "balance": 28390
+    },
+    {
+        "date": "2024-05-08 11:11:48",
+        "category": "Доход",
+        "amount": 675,
+        "description": "xhx",
+        "balance": 29065
+    },
+    {
+        "date": "2024-05-08 11:15:41",
+        "category": "Расход",
+        "amount": 4,
+        "description": "sdfg",
+        "balance": 29061
+    }
+]

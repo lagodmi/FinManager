@@ -33,8 +33,8 @@ class Transaction:
             'balance': balance + amount if category == 'Доход' else balance - amount
         }
         transactions.append(new_transaction)
-        with open(cls.TRANSACTIONS_FILE, 'w') as f:
-            json.dump(transactions, f, indent=4)
+        with open(cls.TRANSACTIONS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(transactions, f, indent=4, ensure_ascii=False)
 
     @classmethod
     def get_last_transaction(cls):
@@ -73,3 +73,19 @@ class Transaction:
             return last_transaction['balance']
         else:
             return 0
+
+
+class ReportService:
+    ALL_TRANSACTION = 'report/all_transaction.txt'
+    BALANCE = 'report/balance.txt'
+    DEPOSIT_TRANSACTION = 'report/deposit_transaction.txt'
+    LAST_TRANSACTION = 'report/last_transaction.txt'
+    SPEND_TRANSACTIONS = 'report/spend_transaction.txt'
+
+    transaction = Transaction()
+
+    @classmethod
+    def get_report(cls):
+        print(cls.transaction.get_all_transaction())
+
+
