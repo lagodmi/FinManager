@@ -1,5 +1,5 @@
-import json
 from datetime import datetime
+import json
 
 
 class Transaction:
@@ -76,15 +76,39 @@ class Transaction:
 
 
 class ReportService:
-    ALL_TRANSACTION = 'report/all_transaction.txt'
-    BALANCE = 'report/balance.txt'
-    DEPOSIT_TRANSACTION = 'report/deposit_transaction.txt'
-    LAST_TRANSACTION = 'report/last_transaction.txt'
-    SPEND_TRANSACTIONS = 'report/spend_transaction.txt'
-
     transaction = Transaction()
+
+    def translation(word: str) -> str:
+        """
+        Перевод на русский.
+        """
+        translation_dict: dict = {
+            'date': 'Дата',
+            'category': 'Категория',
+            'amount': 'Сумма',
+            'description': 'Описание',
+            'balance': 'Баланс'
+        }
+        return translation_dict[word]
 
     @classmethod
     def get_report(cls):
-        all_resolt = []
-        for trans in cls.transaction.get_all_transaction():
+        """
+        Создание файлов отчетности.
+        """
+        report_dict: dict = {
+            'report/all_transaction.txt': cls.transaction.get_all_transaction(),
+            'report/deposit_transaction.txt': cls.transaction.get_deposit_transaction(),
+            'report/spend_transaction.txt': cls.transaction.get_spend_transaction(),
+            'report/last_transaction.txt': [cls.transaction.get_last_transaction()],
+        }
+        for link, report in report_dict.items():
+            all_result: str = ''
+            for trans in report:
+                for key, values in trans.items():
+                    key = cls.translation(key)
+                    all_result += key + ': ' + str(values) + '\n'
+                all_result += '\n'
+
+            with open(link, 'w', encoding='utf-8') as f:
+                f.write(all_result)

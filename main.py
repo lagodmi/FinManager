@@ -87,6 +87,8 @@ def main():
             current_money,
             current_description
         )
+        balance = Transaction.get_balance()
+        print(f'Баланс = {balance}\n')
         restart: str = restart_report()
         flag = restart == "1"
 

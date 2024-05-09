@@ -16,7 +16,6 @@ all_transaction.txt - полная отчетность
 deposit_transaction.txt - поступления
 spend_transaction.txt - списание
 last_transaction.txt - последняя транзакция
-balance.txt - баланс
 """
 
 # ошибки
