@@ -78,19 +78,23 @@ def restart_report() -> str:
 def main():
     flag: bool = True
     while flag:
-        print(s.WELCOME_MESSAGE)
-        current_category = get_category()
-        current_money = get_money(current_category)
-        current_description = get_description()
-        Transaction.set_transaction(
-            current_category,
-            current_money,
-            current_description
-        )
-        balance = Transaction.get_balance()
-        print(f'Баланс = {balance}\n')
-        restart: str = restart_report()
-        flag = restart == "1"
+        try:
+            print(s.WELCOME_MESSAGE)
+            current_category = get_category()
+            current_money = get_money(current_category)
+            current_description = get_description()
+            Transaction.set_transaction(
+                current_category,
+                current_money,
+                current_description
+            )
+            balance = Transaction.get_balance()
+            print(f'Баланс = {balance}\n')
+            restart: str = restart_report()
+            flag = restart == "1"
+        except KeyboardInterrupt:
+            print("\nПрограмма прервана пользователем.")
+            flag = False
 
 
 if __name__ == "__main__":
