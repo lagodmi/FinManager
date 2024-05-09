@@ -3,3 +3,5 @@ all_transaction.txt
 deposit_transaction.txt
 spend_transaction.txt
 last_transaction.txt
+
+__pycache__/
