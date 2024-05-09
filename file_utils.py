@@ -1,6 +1,8 @@
 from datetime import datetime
 import json
 
+from models import Model_Transaction
+
 
 class Transaction:
     TRANSACTIONS_FILE = 'transaction.json'
@@ -23,14 +25,12 @@ class Transaction:
         Добавление новой транзакции.
         """
         transactions = cls.get_all_transaction()
-        balance = cls.get_balance()
 
         new_transaction = {
             'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'category': category,
             'amount': amount,
             'description': description,
-            'balance': balance + amount if category == 'Доход' else balance - amount
         }
         transactions.append(new_transaction)
         with open(cls.TRANSACTIONS_FILE, 'w', encoding='utf-8') as f:
@@ -48,31 +48,39 @@ class Transaction:
             return None
 
     @classmethod
-    def get_deposit_transaction(cls):
+    def get_transaction_by_category(cls, category):
         """
-        Получение транзакций зачисления.
-        """
-        transactions = cls.get_all_transaction()
-        return [t for t in transactions if t['category'] == 'Доход']
-
-    @classmethod
-    def get_spend_transaction(cls):
-        """
-        Получение транзакций списания.
+        Получение транзакций по категории.
         """
         transactions = cls.get_all_transaction()
-        return [t for t in transactions if t['category'] == 'Расход']
+        return [t for t in transactions if t['category'] == category]
 
     @classmethod
     def get_balance(cls):
         """
         Получение текущего остатка по счету.
         """
-        last_transaction = cls.get_last_transaction()
-        if last_transaction:
-            return last_transaction['balance']
-        else:
-            return 0
+        balance: int = 0
+        trans = cls.get_all_transaction()
+        balance += sum(int(t['amount'])
+                       if t['category'] == 'Доход'
+                       else -int(t['amount'])
+                       for t in trans)
+        return balance
+
+    @classmethod
+    def update_transaction(cls, number_transaction,
+                           category, amount, description, date):
+        all_transaction = cls.get_all_transaction()
+        all_transaction[number_transaction] = {
+            'date': date,
+            'category': category,
+            'amount': amount,
+            'description': description,
+        }
+
+        with open(cls.TRANSACTIONS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(all_transaction, f, indent=4, ensure_ascii=False)
 
 
 class ReportService:
@@ -87,7 +95,6 @@ class ReportService:
             'category': 'Категория',
             'amount': 'Сумма',
             'description': 'Описание',
-            'balance': 'Баланс'
         }
         return translation_dict[word]
 
@@ -98,8 +105,8 @@ class ReportService:
         """
         report_dict: dict = {
             'report/all_transaction.txt': cls.transaction.get_all_transaction(),
-            'report/deposit_transaction.txt': cls.transaction.get_deposit_transaction(),
-            'report/spend_transaction.txt': cls.transaction.get_spend_transaction(),
+            'report/deposit_transaction.txt': cls.transaction.get_transaction_by_category('Доход'),
+            'report/spend_transaction.txt': cls.transaction.get_transaction_by_category('Расход'),
             'report/last_transaction.txt': [cls.transaction.get_last_transaction()],
         }
         for link, report in report_dict.items():

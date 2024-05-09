@@ -17,6 +17,9 @@ deposit_transaction.txt - поступления
 spend_transaction.txt - списание
 last_transaction.txt - последняя транзакция
 """
+UPDATE_NUM_TRANSACTION = "Введите номер транзакции\n"
+UPDATE_SELECT_KEY = "Хотите поменять:{} {} нажмите 1."
+UPDATE_BAY = "Обновление сохранено"
 
 # ошибки
 REPEAT_INPUT = "попробуй еще раз"

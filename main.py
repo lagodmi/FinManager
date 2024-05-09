@@ -75,21 +75,63 @@ def restart_report() -> str:
     return massage
 
 
+def update() -> str:
+    """
+    Редактирование записи.
+    """
+    transactions: list[dict] = Transaction.get_all_transaction()
+    counter = 1
+    for transaction in transactions:
+        print(f'Номер операции: {counter}')
+        for key, val in transaction.items():
+            key = ReportService.translation(key)
+            print(f'{key}: {val}')
+        print()
+        counter += 1
+    num_transaction: int = int(input(s.UPDATE_NUM_TRANSACTION)) - 1
+    up_transaction = transactions[num_transaction]
+    date: str = up_transaction['date']
+    category: str = up_transaction['category']
+    amount: int = up_transaction['amount']
+    description: str = up_transaction['description']
+
+    command: str = input(s.UPDATE_SELECT_KEY.format('Категорию', category))
+    if command == '1':
+        category = get_category()
+    command: str = input(s.UPDATE_SELECT_KEY.format('Сумму', amount))
+    if command == '1':
+        amount = get_money(category)
+    command: str = input(s.UPDATE_SELECT_KEY.format('Описание', description))
+    if command == '1':
+        description = get_description()
+
+    Transaction.update_transaction(
+        number_transaction=num_transaction,
+        category=category,
+        amount=amount,
+        description=description,
+        date=date
+    )
+    print(s.UPDATE_BAY)
+
+
 def main():
     flag: bool = True
     while flag:
         try:
             print(s.WELCOME_MESSAGE)
-            current_category = get_category()
-            current_money = get_money(current_category)
-            current_description = get_description()
-            Transaction.set_transaction(
-                current_category,
-                current_money,
-                current_description
-            )
-            balance = Transaction.get_balance()
-            print(f'Баланс = {balance}\n')
+            ddd = input('выбор 1 2')
+            if ddd == '1':
+                update()
+            else:
+                current_category = get_category()
+                current_money = get_money(current_category)
+                current_description = get_description()
+                Transaction.set_transaction(
+                    current_category,
+                    current_money,
+                    current_description
+                )
             restart: str = restart_report()
             flag = restart == "1"
         except KeyboardInterrupt:
