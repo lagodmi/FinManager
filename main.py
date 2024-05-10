@@ -1,3 +1,6 @@
+from datetime import datetime
+import re
+
 import strings as s
 from file_utils import Transaction, ReportService
 
@@ -75,7 +78,19 @@ def restart_report() -> str:
     return massage
 
 
-def update() -> str:
+def create() -> None:
+    current_category = get_category()
+    current_money = get_money(current_category)
+    current_description = get_description()
+    Transaction.set_transaction(
+        current_category,
+        current_money,
+        current_description
+    )
+    print(s.CREATE_TRANSACTION)
+
+
+def update() -> None:
     """
     Редактирование записи.
     """
@@ -115,23 +130,104 @@ def update() -> str:
     print(s.UPDATE_BAY)
 
 
+def search() -> None:
+    """
+    Поиск записи.
+    """
+    transactions: list[dict] = Transaction.get_all_transaction()
+    key = input(s.SELECT_SEARCH)
+
+    # поиск по дате.
+    if key == '1':
+        year: str | None = input(s.YEAR_PROMPT)
+        if not year:
+            year = r'\d{4}'
+
+        month: str | None = input(s.MONTH_PROMPT)
+        if not month:
+            month = r'\d{2}'
+
+        day: str | None = input(s.DAY_PROMPT)
+        if not day:
+            day = r'\d{2}'
+
+        reg_date = fr'^{year}-{month}-{day}'
+
+        for transaction in transactions:
+            if re.search(reg_date, transaction['date']):
+                for key, val in transaction.items():
+                    key = ReportService.translation(key)
+                    print(f'{key}: {val}')
+                print()
+
+    elif key == '2':
+        CAT = {
+            '1': 'Доход',
+            '2': 'Расход'
+        }
+        category = input(s.SELECT_CATEGORY)
+
+        transactions = (
+            Transaction.get_transaction_by_category(CAT[category])
+        )
+        for transaction in transactions:
+            for key, val in transaction.items():
+                key = ReportService.translation(key)
+                print(f'{key}: {val}')
+            print()
+
+    elif key == '3':
+        amount: int = 0
+
+        while amount == 0:
+            try:
+                amount: int = int(input(s.INPUT_MONEY))
+            except ValueError:
+                print(s.REPEAT_INPUT)
+                continue
+
+        for transaction in transactions:
+            if transaction['amount'] == amount:
+                for key, val in transaction.items():
+                    key = ReportService.translation(key)
+                    print(f'{key}: {val}')
+                print()
+
+    elif key == '4':
+        words: list[str] = input('введите слова которые должны быть в описании пример "магазин пятерочка"\n').lower().split()
+
+        for transaction in transactions:
+            if words in transaction['description'].lower().split():
+                for key, val in transaction.items():
+                    key = ReportService.translation(key)
+                    print(f'{key}: {val}')
+                print()
+
+
 def main():
     flag: bool = True
     while flag:
         try:
             print(s.WELCOME_MESSAGE)
-            ddd = input('выбор 1 2')
-            if ddd == '1':
+            operation: str = input(s.SELECT_OPERATION)
+
+            if operation == '1':
+                create()
+
+            elif operation == '2':
+                Transaction.get_balance()
+
+            elif operation == '3':
+                Transaction.get_last_transaction()
+
+            elif operation == '4':
                 update()
+            
+            elif operation == '5':
+                search()
+
             else:
-                current_category = get_category()
-                current_money = get_money(current_category)
-                current_description = get_description()
-                Transaction.set_transaction(
-                    current_category,
-                    current_money,
-                    current_description
-                )
+                print(s.REPEAT_INPUT)
             restart: str = restart_report()
             flag = restart == "1"
         except KeyboardInterrupt:
