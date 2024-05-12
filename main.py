@@ -60,7 +60,10 @@ def get_description() -> str:
     """
     Обработка ввода описания.
     """
-    return input(s.DESCRIPTION)
+    description: str = input(s.DESCRIPTION)
+    if not description:
+        description = s.NOT_DESCRIPTION
+    return description
 
 
 def restart_report() -> str:
@@ -212,7 +215,7 @@ def search() -> None:
                     key = ReportService.translation(key)
                     print(f"{key}: {val}")
                 print()
-                found_entries = False
+                found_entries = True
 
         if not found_entries:
             print(s.ENTRY_NOT_FOUND)

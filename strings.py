@@ -45,7 +45,7 @@ UPDATE_BAY = """
 Обновление сохранено.
 """
 
-UPDATE_NUM_TRANSACTION = "Введите номер транзакции\n"
+UPDATE_NUM_TRANSACTION = "Введите номер операции\n"
 UPDATE_SELECT_KEY = "Хотите поменять:{} {} нажмите 1."
 
 
@@ -60,6 +60,8 @@ SELECT_SEARCH = """
 YEAR_PROMPT = 'Введите год (формат 2024) или enter\n'
 MONTH_PROMPT = 'Введите месяц (формат 02) или enter\n'
 DAY_PROMPT = 'Введите день (формат 07) или enter\n'
+
+NOT_DESCRIPTION = 'Нет описания.'
 
 INPUT_WORDS = """
 Введите слова которые должны быть в описании пример "магазин пятерочка"\n
