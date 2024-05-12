@@ -87,7 +87,7 @@ Fin manager это консольный менеджер расчета дохо
 ## Запуск проекта:
 - Клонируйте репозиторий:
     ```
-    https://github.com/lagodmi/FinManager
+    git clone https://github.com/lagodmi/FinManager.git
     ```
 - В главной директории выполнить команду:
     ```
