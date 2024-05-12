@@ -1,8 +1,6 @@
 from datetime import datetime
 import json
 
-from models import Model_Transaction
-
 
 class Transaction:
     TRANSACTIONS_FILE = 'transaction.json'
@@ -71,6 +69,9 @@ class Transaction:
     @classmethod
     def update_transaction(cls, number_transaction,
                            category, amount, description, date):
+        """
+        Обновление транзакции.
+        """
         all_transaction = cls.get_all_transaction()
         all_transaction[number_transaction] = {
             'date': date,

@@ -4,4 +4,6 @@ deposit_transaction.txt
 spend_transaction.txt
 last_transaction.txt
 
+tests.py
+
 __pycache__/
