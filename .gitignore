@@ -7,3 +7,4 @@ last_transaction.txt
 tests.py
 
 __pycache__/
+venv/
